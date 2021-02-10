@@ -2,9 +2,11 @@ package ru.netology.web;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -31,7 +33,7 @@ public class CardDeliveryTest {
         $("[data-test-id=phone] input").setValue("+79258135366");
         $("[data-test-id=agreement]").click();
         $(".button").click();
-        $(withText("Успешно!")).waitUntil(Condition.visible, 15000);
+        $(withText("Успешно!")).shouldBe (Condition.visible, Duration.ofSeconds(15000));
     }
 
 }
