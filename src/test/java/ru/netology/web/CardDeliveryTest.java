@@ -1,8 +1,6 @@
 package ru.netology.web;
 
 import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.SelenideElement;
-import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,14 +24,13 @@ public class CardDeliveryTest {
 
     @Test
     void shouldSendFormWithValidData() {
-        SelenideElement form = $(".form");
         $("[data-test-id=city] input").setValue("Москва");
         $("[data-test-id=date] input").sendKeys(formatter.format(newDate));
         $("[data-test-id=name] input").setValue("Иванов Иван");
         $("[data-test-id=phone] input").setValue("+79258135366");
         $("[data-test-id=agreement]").click();
         $(".button").click();
-        $(withText("Успешно!")).shouldBe (Condition.visible, Duration.ofSeconds(15000));
+        $(withText("Успешно!")).shouldBe(Condition.visible, Duration.ofSeconds(15000));
     }
 
 }
