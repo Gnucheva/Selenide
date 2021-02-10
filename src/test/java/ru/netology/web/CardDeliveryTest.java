@@ -35,7 +35,7 @@ public class CardDeliveryTest {
     }
 
     @Test
-    void shouldSendFormWithNotCorrectSurname() {
+    void shouldSendFormWithInvalidSurname() {
         $("[data-test-id=city] input").setValue("Москва");
         $("[data-test-id=date] input").sendKeys(formatter.format(newDate));
         $("[data-test-id=name] input").setValue("Ivanov Иван");
@@ -46,7 +46,7 @@ public class CardDeliveryTest {
     }
 
     @Test
-    void shouldSendFormWithNotCorrectPhoneNumber() {
+    void shouldSendFormWithInvalidPhoneNumber() {
         $("[data-test-id=city] input").setValue("Москва");
         $("[data-test-id=date] input").sendKeys(formatter.format(newDate));
         $("[data-test-id=name] input").setValue("Иванов Иван");
@@ -55,4 +55,49 @@ public class CardDeliveryTest {
         $(".button").click();
         $("[data-test-id=phone] .input__sub").shouldHave(exactText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
     }
+
+    @Test
+    void shouldSendFormWithInvalidCity() {
+        $("[data-test-id=city] input").setValue("Moscow");
+        $("[data-test-id=date] input").sendKeys(formatter.format(newDate));
+        $("[data-test-id=name] input").setValue("Иванов Иван");
+        $("[data-test-id=phone] input").setValue("+792581353666");
+        $("[data-test-id=agreement]").click();
+        $(".button").click();
+        $("[data-test-id=city] .input__sub").shouldHave(exactText("Доставка в выбранный город недоступна"));
+    }
+
+    @Test
+    void shouldSendFormWithInvalidDate() {
+        $("[data-test-id=city] input").setValue("Москва");
+        $("[data-test-id=date] input").doubleClick().sendKeys("11.02.2021");
+        $("[data-test-id=name] input").setValue("Иванов Иван");
+        $("[data-test-id=phone] input").setValue("+792581353666");
+        $("[data-test-id=agreement]").click();
+        $(".button").click();
+        $("[data-test-id=date] .input__sub").shouldHave(exactText("Заказ на выбранную дату невозможен"));
+    }
+
+    @Test
+    void shouldSendFormWithEmptyName() {
+        $("[data-test-id=city] input").setValue("Москва");
+        $("[data-test-id=date] input").sendKeys(formatter.format(newDate));
+        $("[data-test-id=name] input").setValue("");
+        $("[data-test-id=phone] input").setValue("+79258135366");
+        $("[data-test-id=agreement]").click();
+        $(".button").click();
+        $("[data-test-id=name] .input__sub").shouldHave(exactText("Поле обязательно для заполнения"));
+    }
+
+    @Test
+    void shouldSendFormWithEmptyNumber() {
+        $("[data-test-id=city] input").setValue("Москва");
+        $("[data-test-id=date] input").sendKeys(formatter.format(newDate));
+        $("[data-test-id=name] input").setValue("Иванов Иван");
+        $("[data-test-id=phone] input").setValue("");
+        $("[data-test-id=agreement]").click();
+        $(".button").click();
+        $("[data-test-id=phone] .input__sub").shouldHave(exactText("Поле обязательно для заполнения"));
+    }
+
 }
