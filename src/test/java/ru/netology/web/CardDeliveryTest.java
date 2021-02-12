@@ -100,4 +100,14 @@ public class CardDeliveryTest {
         $("[data-test-id=phone] .input__sub").shouldHave(exactText("Поле обязательно для заполнения"));
     }
 
+    @Test
+    void shouldSendFormWithoutCheckbox() {
+        $("[data-test-id=city] input").setValue("Москва");
+        $("[data-test-id=date] input").sendKeys(formatter.format(newDate));
+        $("[data-test-id=name] input").setValue("Иванов Иван");
+        $("[data-test-id=phone] input").setValue("+79258135366");
+        $(".button").click();
+        $("[data-test-id='agreement'].input_invalid .checkbox__text")
+                .shouldHave(exactText("Я соглашаюсь с условиями обработки и использования моих персональных данных"));
+    }
 }
