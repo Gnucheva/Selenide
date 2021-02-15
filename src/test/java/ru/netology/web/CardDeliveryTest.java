@@ -1,8 +1,11 @@
 package ru.netology.web;
 
 import com.codeborne.selenide.Condition;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Keys;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -23,6 +26,11 @@ public class CardDeliveryTest {
         open("http://localhost:9999");
     }
 
+    @AfterEach
+    void After(){
+        $("[data-test-id=date] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+    }
+
     @Test
     void shouldSendFormWithValidData() {
         $("[data-test-id=city] input").setValue("Москва");
@@ -32,6 +40,8 @@ public class CardDeliveryTest {
         $("[data-test-id=agreement]").click();
         $(".button").click();
         $(withText("Успешно!")).shouldBe(Condition.visible, Duration.ofSeconds(15000));
+        $(".notification__content")
+                .shouldHave(exactText("Встреча успешно забронирована на " + newDate.format(formatter)));
     }
 
     @Test
