@@ -27,7 +27,7 @@ public class CardDeliveryTest {
     }
 
     @AfterEach
-    void After(){
+    void After() {
         $("[data-test-id=date] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
     }
 
